@@ -3,67 +3,71 @@ package net.ausiasmarch.mobibus.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "parada_fav")
 public class ParadaFavEntity {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long linea;
-
     private String denominacion;
-    
 
-    @OneToMany(mappedBy = "parada_fav", fetch = jakarta.persistence.FetchType.LAZY)
-    private List<UserParadaFavEntity> users_paradas_favs;
 
-   public ParadaFavEntity() {
-        users_paradas_favs = new ArrayList<>();
+   
+ 
+
+@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE )
+@JoinTable(
+    name="user_parada_fav", joinColumns = @JoinColumn(name="id_parada_fav", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name="id_user", referencedColumnName = "id")
+)
+private List<UserEntity> users;
+
+
+
+    public ParadaFavEntity() {
+}
+
+    public ParadaFavEntity(Long id, String denominacion) {
+        this.id = id;
+        this.denominacion = denominacion;
     }
 
-public ParadaFavEntity(Long id, Long linea, String denominacion) {
-    this.id = id;
-    this.linea = linea;
-    this.denominacion = denominacion;
-}
+    public Long getId() {
+        return id;
+    }
 
-public Long getId() {
-    return id;
-}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-public void setId(Long id) {
-    this.id = id;
-}
+    public String getDenominacion() {
+        return denominacion;
+    }
 
-public Long getLinea() {
-    return linea;
-}
+    public void setDenominacion(String denominacion) {
+        this.denominacion = denominacion;
+    }
 
-public void setLinea(Long linea) {
-    this.linea = linea;
-}
+    public List<UserEntity> getUsers() {
+        return users;
+    }
 
-public String getDenominacion() {
-    return denominacion;
-}
-
-public void setDenominacion(String denominacion) {
-    this.denominacion = denominacion;
-}
-
-public int getUsersParadasFavs() {
-    return users_paradas_favs.size();
-}
-
-
+    public void setUsers(List<UserEntity> users) {
+        this.users = users;
+    }
 
 }

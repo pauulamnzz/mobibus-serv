@@ -4,10 +4,15 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -28,12 +33,16 @@ public class UserEntity {
 
     private Boolean role = false;
 
-    @OneToMany(mappedBy = "user", fetch = jakarta.persistence.FetchType.LAZY)
-    private List<UserParadaFavEntity> users_paradas_favs;
+ 
+
+@ManyToMany(mappedBy = "users")
+private List<ParadaFavEntity> paradas_favs;
+
+
+
 
     public UserEntity() {
-        users_paradas_favs = new ArrayList<>();
-    }
+}
 
     public UserEntity(Long id, String username, String password, String email, Boolean role) {
         this.id = id;
@@ -95,9 +104,15 @@ public class UserEntity {
         this.role = role;
     }
 
-    public int getUsersParadasFavs() {
-        return users_paradas_favs.size();
+    public List<ParadaFavEntity> getParadas_favs() {
+        return paradas_favs;
     }
+
+    public void setParadas_favs(List<ParadaFavEntity> paradas_favs) {
+        this.paradas_favs = paradas_favs;
+    }
+
+   
 
 
 
