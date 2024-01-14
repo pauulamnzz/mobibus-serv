@@ -25,8 +25,7 @@ public class ParadaFavEntity {
 
     private String denominacion;
 
-
-   
+   private Long id_parada_api;
  
 
 @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE )
@@ -41,9 +40,10 @@ private List<UserEntity> users;
     public ParadaFavEntity() {
 }
 
-    public ParadaFavEntity(Long id, String denominacion) {
+    public ParadaFavEntity(Long id, String denominacion, Long id_parada_api) {
         this.id = id;
         this.denominacion = denominacion;
+        this.id_parada_api = id_parada_api;
     }
 
     public Long getId() {
@@ -68,6 +68,14 @@ private List<UserEntity> users;
 
     public void setUsers(List<UserEntity> users) {
         this.users = users;
+    }
+
+    public Long getId_parada_api() {
+        return id_parada_api;
+    }
+
+    public void setId_parada_api(Long id_parada_api) {
+        this.id_parada_api = id_parada_api;
     }
 
 }
