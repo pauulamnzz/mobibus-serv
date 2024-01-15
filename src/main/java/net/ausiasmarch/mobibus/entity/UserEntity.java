@@ -1,6 +1,7 @@
 package net.ausiasmarch.mobibus.entity;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -110,6 +111,11 @@ private List<ParadaFavEntity> paradas_favs;
 
     public void setParadas_favs(List<ParadaFavEntity> paradas_favs) {
         this.paradas_favs = paradas_favs;
+    }
+
+    public Optional<UserEntity> findById(Long id2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 
    

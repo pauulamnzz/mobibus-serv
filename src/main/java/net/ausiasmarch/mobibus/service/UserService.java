@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.ausiasmarch.mobibus.entity.ParadaFavEntity;
 import net.ausiasmarch.mobibus.entity.UserEntity;
 import net.ausiasmarch.mobibus.exception.ResourceNotFoundException;
 import net.ausiasmarch.mobibus.repository.UserRepository;
@@ -22,6 +23,7 @@ public class UserService {
     @Autowired
     SessionService oSessionService;
 
+
         public Long create(UserEntity oUserEntity) {
        //oSessionService.onlyAdmins();
         oUserEntity.setId(null);
@@ -36,7 +38,9 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found by username"));
     }
     public Long delete(Long id) {
-     oSessionService.onlyAdmins();
+        UserEntity oUserEntity = oUserRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("User no encontrado con ID " + id));
+    // oSessionService.onlyAdmins();
         oUserRepository.deleteById(id);
         return id;
     }
