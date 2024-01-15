@@ -23,7 +23,7 @@ public class UserService {
     SessionService oSessionService;
 
         public Long create(UserEntity oUserEntity) {
-       oSessionService.onlyAdmins();
+       //oSessionService.onlyAdmins();
         oUserEntity.setId(null);
         oUserEntity.setPassword(foxforumPASSWORD);
         return oUserRepository.save(oUserEntity).getId();
