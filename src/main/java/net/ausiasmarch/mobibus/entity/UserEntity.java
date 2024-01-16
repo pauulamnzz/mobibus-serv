@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
@@ -35,7 +36,7 @@ public class UserEntity {
     private Boolean role = false;
 
  
-
+@JsonIgnore
 @ManyToMany(mappedBy = "users")
 private List<ParadaFavEntity> paradas_favs;
 

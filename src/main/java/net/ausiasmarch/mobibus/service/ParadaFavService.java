@@ -22,6 +22,7 @@ import net.ausiasmarch.mobibus.entity.ParadaFavEntity;
 import net.ausiasmarch.mobibus.entity.UserEntity;
 import net.ausiasmarch.mobibus.exception.ResourceNotFoundException;
 import net.ausiasmarch.mobibus.repository.ParadaFavRepository;
+import net.ausiasmarch.mobibus.repository.UserRepository;
 
 @Service
 public class ParadaFavService {
@@ -36,6 +37,9 @@ public class ParadaFavService {
 
     @Autowired
     ParadaFavRepository oParadaFavRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     public ParadaFavEntity get(Long id) {
         return oParadaFavRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Thread not found"));
@@ -79,13 +83,32 @@ public class ParadaFavService {
 
     
 
-public ParadaFavEntity update(ParadaFavEntity oParadaFavEntityToSet) {
-   // ParadaFavEntity oParadaFavEntityFromDatabase = this.get(oParadaFavEntityToSet.getId());
-    return oParadaFavRepository.save(oParadaFavEntityToSet);
+public ParadaFavEntity update(ParadaFavEntity updatedParadaFavEntity) {
+    ParadaFavEntity existingParadaFavEntity = oParadaFavRepository.findById(updatedParadaFavEntity.getId()).orElse(null);
+    if (existingParadaFavEntity != null) {
+        // Actualizar la denominación y el id_parada_api
+        existingParadaFavEntity.setDenominacion(updatedParadaFavEntity.getDenominacion());
+        
+        existingParadaFavEntity.setId_parada_api(updatedParadaFavEntity.getId_parada_api());
+        List<UserEntity> newUsers = updatedParadaFavEntity.getUsers();
 
-
+        // Si la lista de usuarios no está vacía, actualizar la lista de usuarios de la entidad existente
+        if (newUsers != null && !newUsers.isEmpty()) {
+            // Obtener el primer usuario del JSON (si hay más de uno, ajusta según tus necesidades)
+            UserEntity newUser = newUsers.get(0);
+            // Verificar si el usuario existe antes de agregarlo
+            UserEntity existingUser = userRepository.findById(newUser.getId()).orElse(null);
+            if (existingUser != null) {
+                existingParadaFavEntity.getUsers().clear();
+                existingParadaFavEntity.getUsers().add(existingUser);
+            }
+        }
+        return oParadaFavRepository.save(existingParadaFavEntity);
+    } else {
+        // No se encontró la entidad en la base de datos
+        return null;
+    }
 }
-
     
 
     /**
