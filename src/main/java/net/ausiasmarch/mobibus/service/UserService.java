@@ -22,7 +22,10 @@ public class UserService {
 
     @Autowired
     SessionService oSessionService;
-
+    
+    public UserEntity get(Long id) {
+        return oUserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
 
         public Long create(UserEntity oUserEntity) {
        //oSessionService.onlyAdmins();
@@ -30,9 +33,7 @@ public class UserService {
         oUserEntity.setPassword(foxforumPASSWORD);
         return oUserRepository.save(oUserEntity).getId();
     }
-        public UserEntity get(Long id) {
-        return oUserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-    }
+
     public UserEntity getByUsername(String username) {
         return oUserRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found by username"));

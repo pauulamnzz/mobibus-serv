@@ -47,5 +47,8 @@ public ResponseEntity<ParadaFavEntity> update(@RequestBody ParadaFavEntity oPara
     return ResponseEntity.ok(oParadaFavService.update(oParadaFavEntity));
 }
 
-
+@GetMapping("/{id}")
+public ResponseEntity<ParadaFavEntity> get(@PathVariable("id") Long id) {
+    return ResponseEntity.ok(oParadaFavService.get(id));
+}
 }
