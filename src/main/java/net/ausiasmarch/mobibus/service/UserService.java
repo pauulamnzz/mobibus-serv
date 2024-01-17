@@ -1,13 +1,14 @@
 package net.ausiasmarch.mobibus.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.stereotype.Service;
-
 import jakarta.servlet.http.HttpServletRequest;
 import net.ausiasmarch.mobibus.entity.ParadaFavEntity;
 import net.ausiasmarch.mobibus.entity.UserEntity;
 import net.ausiasmarch.mobibus.exception.ResourceNotFoundException;
 import net.ausiasmarch.mobibus.repository.UserRepository;
+import org.springframework.data.domain.Page;
 
 @Service
 public class UserService {
@@ -26,6 +27,10 @@ public class UserService {
     public UserEntity get(Long id) {
         return oUserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
+ /*   public Page<UserEntity> getPage(Pageable oPageable) {
+        return oUserRepository.findAll(oPageable);
+    } */
+ 
 
         public Long create(UserEntity oUserEntity) {
        //oSessionService.onlyAdmins();
