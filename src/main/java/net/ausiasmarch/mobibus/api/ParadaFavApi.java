@@ -3,6 +3,8 @@ package net.ausiasmarch.mobibus.api;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -51,4 +53,10 @@ public ResponseEntity<ParadaFavEntity> update(@RequestBody ParadaFavEntity oPara
 public ResponseEntity<ParadaFavEntity> get(@PathVariable("id") Long id) {
     return ResponseEntity.ok(oParadaFavService.get(id));
 }
+
+    @GetMapping("")
+    public ResponseEntity<Page<ParadaFavEntity>> getPage(Pageable oPageable) {
+        return ResponseEntity.ok(oParadaFavService.getPage(oPageable));
+    }
+
 }

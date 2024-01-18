@@ -1,7 +1,7 @@
 package net.ausiasmarch.mobibus.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import net.ausiasmarch.mobibus.entity.ParadaFavEntity;
@@ -9,6 +9,7 @@ import net.ausiasmarch.mobibus.entity.UserEntity;
 import net.ausiasmarch.mobibus.exception.ResourceNotFoundException;
 import net.ausiasmarch.mobibus.repository.UserRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class UserService {
@@ -27,9 +28,9 @@ public class UserService {
     public UserEntity get(Long id) {
         return oUserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
- /*   public Page<UserEntity> getPage(Pageable oPageable) {
+   public Page<UserEntity> getPage(Pageable oPageable) {
         return oUserRepository.findAll(oPageable);
-    } */
+    } 
  
 
         public Long create(UserEntity oUserEntity) {
@@ -44,9 +45,7 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found by username"));
     }
     public Long delete(Long id) {
-        UserEntity oUserEntity = oUserRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("User no encontrado con ID " + id));
-    // oSessionService.onlyAdmins();
+        // oSessionService.onlyAdmins();
         oUserRepository.deleteById(id);
         return id;
     }

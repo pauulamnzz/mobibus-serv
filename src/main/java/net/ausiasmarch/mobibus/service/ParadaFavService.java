@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -42,8 +44,12 @@ public class ParadaFavService {
     UserRepository userRepository;
 
     public ParadaFavEntity get(Long id) {
-        return oParadaFavRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Thread not found"));
+        return oParadaFavRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
+   public Page<ParadaFavEntity> getPage(Pageable oPageable) {
+        return oParadaFavRepository.findAll(oPageable);
+    } 
+ 
 
     public ResponseEntity<?> create(ParadaFavEntity nuevaParadaFav) throws java.io.IOException {
         Long idParada = nuevaParadaFav.getId_parada_api();
