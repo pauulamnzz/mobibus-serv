@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import net.ausiasmarch.mobibus.entity.ParadaFavEntity;
 import net.ausiasmarch.mobibus.entity.UserEntity;
 import net.ausiasmarch.mobibus.exception.ResourceNotFoundException;
@@ -51,7 +52,7 @@ public class UserService {
     }
     public UserEntity update(UserEntity oUserEntityToSet) {
         UserEntity oUserEntityFromDatabase = this.get(oUserEntityToSet.getId());
-        oSessionService.onlyAdminsOrUsersWithIisOwnData(oUserEntityFromDatabase.getId());
+       // oSessionService.onlyAdminsOrUsersWithIisOwnData(oUserEntityFromDatabase.getId());
         if (oSessionService.isUser()) {            
             oUserEntityToSet.setRole(oUserEntityFromDatabase.getRole());
             oUserEntityToSet.setPassword(foxforumPASSWORD);
@@ -60,5 +61,16 @@ public class UserService {
             oUserEntityToSet.setPassword(foxforumPASSWORD);
             return oUserRepository.save(oUserEntityToSet);
         }
+    }
+    @Transactional
+    public Long empty() {
+        //oSessionService.onlyAdmins();
+        oUserRepository.deleteAll();
+        oUserRepository.resetAutoIncrement();
+        UserEntity oJugadorEntity1 = new UserEntity("Paula", "paulamg@gmail.com", foxforumPASSWORD, true);
+                oUserRepository.save(oJugadorEntity1);
+        oJugadorEntity1 = new UserEntity("Hugo", "taric@gmail.com", foxforumPASSWORD, false);
+                oUserRepository.save(oJugadorEntity1);
+        return oUserRepository.count();
     }
 }
