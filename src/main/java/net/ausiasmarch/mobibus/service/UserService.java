@@ -66,7 +66,7 @@ public class UserService {
         //oSessionService.onlyAdmins();
         oUserRepository.deleteAll();
         oUserRepository.resetAutoIncrement();
-        UserEntity oJugadorEntity1 = new UserEntity("Paco",foxforumPASSWORD, "asdd@gmail.com",  false);
+        UserEntity oJugadorEntity1 = new UserEntity("Paula",foxforumPASSWORD, "asdd@gmail.com",  true);
                 oUserRepository.save(oJugadorEntity1);
         oJugadorEntity1 = new UserEntity("Hugo",foxforumPASSWORD, "taric@gmail.com", false);
                 oUserRepository.save(oJugadorEntity1);
