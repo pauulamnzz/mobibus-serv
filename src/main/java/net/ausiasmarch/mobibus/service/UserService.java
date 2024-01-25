@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
-import net.ausiasmarch.mobibus.entity.ParadaFavEntity;
 import net.ausiasmarch.mobibus.entity.UserEntity;
 import net.ausiasmarch.mobibus.exception.ResourceNotFoundException;
 import net.ausiasmarch.mobibus.repository.UserRepository;
