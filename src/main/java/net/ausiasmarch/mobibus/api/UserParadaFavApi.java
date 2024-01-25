@@ -46,4 +46,8 @@ UserParadaFavService oUserParadaFavService;
     public ResponseEntity<Long> delete(@PathVariable("id") Long id) {
         return ResponseEntity.ok(oUserParadaFavService.delete(id));
     }
+    @DeleteMapping("/empty")
+    public ResponseEntity<Long> empty() {
+        return ResponseEntity.ok(oUserParadaFavService.empty());
+    }
 }

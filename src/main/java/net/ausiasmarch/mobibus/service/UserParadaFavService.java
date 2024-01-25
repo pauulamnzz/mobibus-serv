@@ -76,7 +76,7 @@ public UserParadaFavEntity get(Long id) {
     }
     @Transactional
     public Long empty() {
-        oSessionService.onlyAdmins();
+       // oSessionService.onlyAdmins();
         oUserParadaFavRepository.deleteAll();
         oUserParadaFavRepository.resetAutoIncrement();
         oUserParadaFavRepository.flush();
