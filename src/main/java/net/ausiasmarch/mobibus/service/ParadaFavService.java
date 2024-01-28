@@ -15,29 +15,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.io.IOException;
 import jakarta.transaction.Transactional;
 import net.ausiasmarch.mobibus.entity.UserEntity;
-import net.ausiasmarch.mobibus.entity.UserParadaFavEntity;
+import net.ausiasmarch.mobibus.entity.ParadaFavEntity;
 import net.ausiasmarch.mobibus.exception.ResourceNotFoundException;
-import net.ausiasmarch.mobibus.repository.UserParadaFavRepository;
+import net.ausiasmarch.mobibus.repository.ParadaFavRepository;
 
 @Service
-public class UserParadaFavService {
+public class ParadaFavService {
     private static final String API_URL = "https://valencia.opendatasoft.com/api/explore/v2.1/catalog/datasets/emt/records";
     
     @Autowired
-    UserParadaFavRepository oUserParadaFavRepository;  
+    ParadaFavRepository oUserParadaFavRepository;  
 
 @Autowired
 SessionService oSessionService;
 
-public UserParadaFavEntity get(Long id) {
+public ParadaFavEntity get(Long id) {
        // oSessionService.onlyAdmins();
         return oUserParadaFavRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Thread not found"));
    
 }
-   public Page<UserParadaFavEntity> getPage(Pageable oPageable) {
+   public Page<ParadaFavEntity> getPage(Pageable oPageable) {
         return oUserParadaFavRepository.findAll(oPageable);
     } 
-    public Long create(UserParadaFavEntity nuevaParadaFav) {
+    public Long create(ParadaFavEntity nuevaParadaFav) {
         Long id_parada = nuevaParadaFav.getId_parada();
         try {
             if(checkIdExists(id_parada)){
@@ -54,8 +54,8 @@ public UserParadaFavEntity get(Long id) {
         
     }
 
-    public UserParadaFavEntity update(UserParadaFavEntity oUserParadaFavEntityToSet) {
-        UserParadaFavEntity oUserParadaFavEntityFromDatabase = this.get(oUserParadaFavEntityToSet.getId());
+    public ParadaFavEntity update(ParadaFavEntity oUserParadaFavEntityToSet) {
+        ParadaFavEntity oUserParadaFavEntityFromDatabase = this.get(oUserParadaFavEntityToSet.getId());
         oSessionService.onlyAdminsOrUsersWithIisOwnData(oUserParadaFavEntityFromDatabase.getUser().getId());
         if (oSessionService.isUser()) {
             if (oUserParadaFavEntityToSet.getUser().getId().equals(oSessionService.getSessionUser().getId())) {
@@ -69,7 +69,7 @@ public UserParadaFavEntity get(Long id) {
     }
 
     public Long delete(Long id) {
-        UserParadaFavEntity oUserParadaFavEntityFromDatabase = this.get(id);
+        ParadaFavEntity oUserParadaFavEntityFromDatabase = this.get(id);
         oSessionService.onlyAdminsOrUsersWithIisOwnData(oUserParadaFavEntityFromDatabase.getUser().getId());
         oUserParadaFavRepository.deleteById(id);
         return id;

@@ -27,7 +27,7 @@ public class UserEntity {
     private Boolean role = false;
 
     @OneToMany(mappedBy = "user", fetch = jakarta.persistence.FetchType.LAZY)
-    private List<UserParadaFavEntity> users_paradas_favs;
+    private List<ParadaFavEntity> users_paradas_favs;
 
     public UserEntity() {
         users_paradas_favs = new ArrayList<>();

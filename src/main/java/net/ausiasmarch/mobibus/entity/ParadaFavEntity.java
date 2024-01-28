@@ -9,8 +9,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "user_parada_fav")
-public class UserParadaFavEntity {
+@Table(name = "parada_fav")
+public class ParadaFavEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,14 +26,14 @@ public class UserParadaFavEntity {
 
     
 
-    public UserParadaFavEntity() {
+    public ParadaFavEntity() {
     }
 
-    public UserParadaFavEntity(Long id) {
+    public ParadaFavEntity(Long id) {
         this.id = id;
     }
 
-    public UserParadaFavEntity(UserEntity user, String alias) {
+    public ParadaFavEntity(UserEntity user, String alias) {
         this.user = user;
         this.alias=alias;
 

@@ -34,7 +34,7 @@ public class UserService {
  
 
         public Long create(UserEntity oUserEntity) {
-       //oSessionService.onlyAdmins();
+       oSessionService.onlyAdmins();
         oUserEntity.setId(null);
         oUserEntity.setPassword(foxforumPASSWORD);
         return oUserRepository.save(oUserEntity).getId();
@@ -45,13 +45,13 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found by username"));
     }
     public Long delete(Long id) {
-        // oSessionService.onlyAdmins();
+        oSessionService.onlyAdmins();
         oUserRepository.deleteById(id);
         return id;
     }
     public UserEntity update(UserEntity oUserEntityToSet) {
         UserEntity oUserEntityFromDatabase = this.get(oUserEntityToSet.getId());
-       // oSessionService.onlyAdminsOrUsersWithIisOwnData(oUserEntityFromDatabase.getId());
+       oSessionService.onlyAdminsOrUsersWithIisOwnData(oUserEntityFromDatabase.getId());
         if (oSessionService.isUser()) {            
             oUserEntityToSet.setRole(oUserEntityFromDatabase.getRole());
             oUserEntityToSet.setPassword(foxforumPASSWORD);
@@ -63,12 +63,12 @@ public class UserService {
     }
     @Transactional
     public Long empty() {
-        //oSessionService.onlyAdmins();
+        oSessionService.onlyAdmins();
         oUserRepository.deleteAll();
         oUserRepository.resetAutoIncrement();
-        UserEntity oJugadorEntity1 = new UserEntity("Paula",foxforumPASSWORD, "asdd@gmail.com",  true);
+        UserEntity oJugadorEntity1 = new UserEntity("Paula",foxforumPASSWORD, "asdd@gmail.com",  false);
                 oUserRepository.save(oJugadorEntity1);
-        oJugadorEntity1 = new UserEntity("Hugo",foxforumPASSWORD, "taric@gmail.com", false);
+        oJugadorEntity1 = new UserEntity("Hugo",foxforumPASSWORD, "taric@gmail.com", true);
                 oUserRepository.save(oJugadorEntity1);
         return oUserRepository.count();
     }

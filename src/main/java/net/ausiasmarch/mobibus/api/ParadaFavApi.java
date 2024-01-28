@@ -15,30 +15,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.ausiasmarch.mobibus.entity.UserEntity;
-import net.ausiasmarch.mobibus.entity.UserParadaFavEntity;
-import net.ausiasmarch.mobibus.service.UserParadaFavService;
+import net.ausiasmarch.mobibus.entity.ParadaFavEntity;
+import net.ausiasmarch.mobibus.service.ParadaFavService;
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/user_parada_fav")
-public class UserParadaFavApi {
+@RequestMapping("/parada_fav")
+public class ParadaFavApi {
     
 @Autowired
-UserParadaFavService oUserParadaFavService;
+ParadaFavService oUserParadaFavService;
 
     @PostMapping("")
-    public ResponseEntity<Long> create(@RequestBody UserParadaFavEntity oUserParadaFavEntity) {
+    public ResponseEntity<Long> create(@RequestBody ParadaFavEntity oUserParadaFavEntity) {
     return ResponseEntity.ok(oUserParadaFavService.create(oUserParadaFavEntity));
     }
      @PutMapping("")
-    public ResponseEntity<UserParadaFavEntity> update(@RequestBody UserParadaFavEntity oUserParadaFavEntity) {
+    public ResponseEntity<ParadaFavEntity> update(@RequestBody ParadaFavEntity oUserParadaFavEntity) {
         return ResponseEntity.ok(oUserParadaFavService.update(oUserParadaFavEntity));
     }
     @GetMapping("/{id}")
-    public ResponseEntity<UserParadaFavEntity> get(@PathVariable("id") Long id) {
+    public ResponseEntity<ParadaFavEntity> get(@PathVariable("id") Long id) {
         return ResponseEntity.ok(oUserParadaFavService.get(id));
     }
        @GetMapping("")
-    public ResponseEntity<Page<UserParadaFavEntity>> getPage(Pageable oPageable) {
+    public ResponseEntity<Page<ParadaFavEntity>> getPage(Pageable oPageable) {
         return ResponseEntity.ok(oUserParadaFavService.getPage(oPageable));
     }
     

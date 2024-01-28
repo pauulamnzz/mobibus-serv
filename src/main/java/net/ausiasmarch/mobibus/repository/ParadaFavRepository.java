@@ -6,14 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import net.ausiasmarch.mobibus.entity.UserParadaFavEntity;
+import net.ausiasmarch.mobibus.entity.ParadaFavEntity;
 
-public interface UserParadaFavRepository extends JpaRepository<UserParadaFavEntity, Long> {
+public interface ParadaFavRepository extends JpaRepository<ParadaFavEntity, Long> {
     
     @Modifying
     @Query(value = "ALTER TABLE user_parada_fav AUTO_INCREMENT = 1", nativeQuery = true)
     void resetAutoIncrement();
 
-    Page<UserParadaFavEntity> findByUserId(Long id, Pageable pageable);
+    Page<ParadaFavEntity> findByUserId(Long id, Pageable pageable);
 
 }
