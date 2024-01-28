@@ -27,10 +27,10 @@ public class UserEntity {
     private Boolean role = false;
 
     @OneToMany(mappedBy = "user", fetch = jakarta.persistence.FetchType.LAZY)
-    private List<ParadaFavEntity> users_paradas_favs;
+    private List<ParadaFavEntity> paradas_favs;
 
     public UserEntity() {
-        users_paradas_favs = new ArrayList<>();
+        paradas_favs = new ArrayList<>();
     }
 
     public UserEntity(Long id, String username, String password, String email, Boolean role) {
@@ -93,8 +93,8 @@ public class UserEntity {
         this.role = role;
     }
 
-    public int getUsersParadasFavs() {
-        return users_paradas_favs.size();
+    public int getparadas_favs() {
+        return paradas_favs.size();
     }
 
 
