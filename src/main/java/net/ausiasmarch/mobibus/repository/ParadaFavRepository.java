@@ -16,4 +16,7 @@ public interface ParadaFavRepository extends JpaRepository<ParadaFavEntity, Long
 
     Page<ParadaFavEntity> findByUserId(Long id, Pageable pageable);
 
+
+
+
 }

@@ -1,5 +1,7 @@
 package net.ausiasmarch.mobibus.api;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,31 +25,36 @@ import net.ausiasmarch.mobibus.service.ParadaFavService;
 public class ParadaFavApi {
     
 @Autowired
-ParadaFavService oUserParadaFavService;
+ParadaFavService oParadaFavService;
 
     @PostMapping("")
-    public ResponseEntity<Long> create(@RequestBody ParadaFavEntity oUserParadaFavEntity) {
-    return ResponseEntity.ok(oUserParadaFavService.create(oUserParadaFavEntity));
+    public ResponseEntity<Long> create(@RequestBody ParadaFavEntity oParadaFavEntity) {
+    return ResponseEntity.ok(oParadaFavService.create(oParadaFavEntity));
     }
      @PutMapping("")
-    public ResponseEntity<ParadaFavEntity> update(@RequestBody ParadaFavEntity oUserParadaFavEntity) {
-        return ResponseEntity.ok(oUserParadaFavService.update(oUserParadaFavEntity));
+    public ResponseEntity<ParadaFavEntity> update(@RequestBody ParadaFavEntity oParadaFavEntity) {
+        return ResponseEntity.ok(oParadaFavService.update(oParadaFavEntity));
     }
     @GetMapping("/{id}")
     public ResponseEntity<ParadaFavEntity> get(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(oUserParadaFavService.get(id));
+        return ResponseEntity.ok(oParadaFavService.get(id));
     }
        @GetMapping("")
     public ResponseEntity<Page<ParadaFavEntity>> getPage(Pageable oPageable) {
-        return ResponseEntity.ok(oUserParadaFavService.getPage(oPageable));
+        return ResponseEntity.ok(oParadaFavService.getPage(oPageable));
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(oUserParadaFavService.delete(id));
+        return ResponseEntity.ok(oParadaFavService.delete(id));
     }
     @DeleteMapping("/empty")
     public ResponseEntity<Long> empty() {
-        return ResponseEntity.ok(oUserParadaFavService.empty());
+        return ResponseEntity.ok(oParadaFavService.empty());
+    }
+    @GetMapping("/fav/{userId}")
+    public ResponseEntity<List<ParadaFavEntity>> getParadasFavoritasByUserId(@PathVariable Long userId) {
+        List<ParadaFavEntity> paradasFavoritas = oParadaFavService.getParadasFavoritasByUserId(userId);
+        return ResponseEntity.ok(paradasFavoritas);
     }
 }

@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,24 +25,24 @@ public class ParadaFavService {
     private static final String API_URL = "https://valencia.opendatasoft.com/api/explore/v2.1/catalog/datasets/emt/records";
     
     @Autowired
-    ParadaFavRepository oUserParadaFavRepository;  
+    ParadaFavRepository oParadaFavRepository;  
 
 @Autowired
 SessionService oSessionService;
 
 public ParadaFavEntity get(Long id) {
        // oSessionService.onlyAdmins();
-        return oUserParadaFavRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Thread not found"));
+        return oParadaFavRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Thread not found"));
    
 }
    public Page<ParadaFavEntity> getPage(Pageable oPageable) {
-        return oUserParadaFavRepository.findAll(oPageable);
+        return oParadaFavRepository.findAll(oPageable);
     } 
     public Long create(ParadaFavEntity nuevaParadaFav) {
         Long id_parada = nuevaParadaFav.getId_parada();
         try {
             if(checkIdExists(id_parada)){
-                oUserParadaFavRepository.save(nuevaParadaFav);
+                oParadaFavRepository.save(nuevaParadaFav);
                 return nuevaParadaFav.getId();
             }else{
                 throw new RuntimeException("El ID de parada no existe. No se puede crear la nueva parada favorita.");            }
@@ -50,37 +51,37 @@ public ParadaFavEntity get(Long id) {
         }
        // oSessionService.onlyAdminsOrUsers();
        nuevaParadaFav.setId(null);
-        return oUserParadaFavRepository.save(nuevaParadaFav).getId();
+        return oParadaFavRepository.save(nuevaParadaFav).getId();
         
     }
 
-    public ParadaFavEntity update(ParadaFavEntity oUserParadaFavEntityToSet) {
-        ParadaFavEntity oUserParadaFavEntityFromDatabase = this.get(oUserParadaFavEntityToSet.getId());
-        oSessionService.onlyAdminsOrUsersWithIisOwnData(oUserParadaFavEntityFromDatabase.getUser().getId());
+    public ParadaFavEntity update(ParadaFavEntity oParadaFavEntityToSet) {
+        ParadaFavEntity oParadaFavEntityFromDatabase = this.get(oParadaFavEntityToSet.getId());
+        oSessionService.onlyAdminsOrUsersWithIisOwnData(oParadaFavEntityFromDatabase.getUser().getId());
         if (oSessionService.isUser()) {
-            if (oUserParadaFavEntityToSet.getUser().getId().equals(oSessionService.getSessionUser().getId())) {
-                return oUserParadaFavRepository.save(oUserParadaFavEntityToSet);
+            if (oParadaFavEntityToSet.getUser().getId().equals(oSessionService.getSessionUser().getId())) {
+                return oParadaFavRepository.save(oParadaFavEntityToSet);
             } else {
                 throw new ResourceNotFoundException("Unauthorized");
             }
         } else {
-            return oUserParadaFavRepository.save(oUserParadaFavEntityToSet);
+            return oParadaFavRepository.save(oParadaFavEntityToSet);
         }
     }
 
     public Long delete(Long id) {
-        ParadaFavEntity oUserParadaFavEntityFromDatabase = this.get(id);
-        oSessionService.onlyAdminsOrUsersWithIisOwnData(oUserParadaFavEntityFromDatabase.getUser().getId());
-        oUserParadaFavRepository.deleteById(id);
+        ParadaFavEntity oParadaFavEntityFromDatabase = this.get(id);
+        oSessionService.onlyAdminsOrUsersWithIisOwnData(oParadaFavEntityFromDatabase.getUser().getId());
+        oParadaFavRepository.deleteById(id);
         return id;
     }
     @Transactional
     public Long empty() {
        // oSessionService.onlyAdmins();
-        oUserParadaFavRepository.deleteAll();
-        oUserParadaFavRepository.resetAutoIncrement();
-        oUserParadaFavRepository.flush();
-        return oUserParadaFavRepository.count();
+       oParadaFavRepository.deleteAll();
+       oParadaFavRepository.resetAutoIncrement();
+        oParadaFavRepository.flush();
+        return oParadaFavRepository.count();
     }
  /**
      * Verifica si un identificador dado existe en la API mediante una solicitud
@@ -129,6 +130,11 @@ public ParadaFavEntity get(Long id) {
                     .severe("Error al verificar la existencia del ID en la API: " + e.getMessage());
             return false;
         }
+    }
+    public List<ParadaFavEntity> getParadasFavoritasByUserId(Long userId) {
+        // Puedes ajustar el nombre del método según la convención de nombres que prefieras
+        Page<ParadaFavEntity> page = oParadaFavRepository.findByUserId(userId, null);
+        return page.getContent();
     }
 
 }
