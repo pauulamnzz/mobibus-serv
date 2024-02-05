@@ -159,7 +159,7 @@ public class ParadaFavService {
      * @return true si el id_parada ya existe para el usuario, false en caso
      *         contrario.
      */
-    private boolean paradaFavExistsForUser(Long id_parada, Long userId) {
+    public boolean paradaFavExistsForUser(Long id_parada, Long userId) {
         return oParadaFavRepository.existsByUserIdAndId_parada(userId, id_parada);
     }
 
