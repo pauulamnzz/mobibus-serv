@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.io.IOException;
 import jakarta.transaction.Transactional;
-import net.ausiasmarch.mobibus.entity.UserEntity;
 import net.ausiasmarch.mobibus.entity.ParadaFavEntity;
 import net.ausiasmarch.mobibus.exception.ResourceNotFoundException;
 import net.ausiasmarch.mobibus.repository.ParadaFavRepository;
@@ -23,36 +23,48 @@ import net.ausiasmarch.mobibus.repository.ParadaFavRepository;
 @Service
 public class ParadaFavService {
     private static final String API_URL = "https://valencia.opendatasoft.com/api/explore/v2.1/catalog/datasets/emt/records";
-    
+
     @Autowired
-    ParadaFavRepository oParadaFavRepository;  
+    ParadaFavRepository oParadaFavRepository;
 
-@Autowired
-SessionService oSessionService;
+    @Autowired
+    SessionService oSessionService;
 
-public ParadaFavEntity get(Long id) {
-       // oSessionService.onlyAdmins();
+    public ParadaFavEntity get(Long id) {
+        oSessionService.onlyAdmins();
         return oParadaFavRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Thread not found"));
-   
-}
-   public Page<ParadaFavEntity> getPage(Pageable oPageable) {
+
+    }
+
+    public Page<ParadaFavEntity> getPage(Pageable oPageable) {
         return oParadaFavRepository.findAll(oPageable);
-    } 
+    }
+
     public Long create(ParadaFavEntity nuevaParadaFav) {
         Long id_parada = nuevaParadaFav.getId_parada();
+        Long userId = nuevaParadaFav.getUser().getId();
         try {
-            if(checkIdExists(id_parada)){
-                oParadaFavRepository.save(nuevaParadaFav);
-                return nuevaParadaFav.getId();
-            }else{
-                throw new RuntimeException("El ID de parada no existe. No se puede crear la nueva parada favorita.");            }
+            if (checkIdExists(id_parada)) {
+                if (!paradaFavExistsForUser(id_parada, userId)) {
+                    oParadaFavRepository.save(nuevaParadaFav);
+                    return nuevaParadaFav.getId();
+                } else {
+                    throw new RuntimeException(
+                            "El ID de parada ya existe para el usuario. No se puede crear la nueva parada favorita.");
+
+                }
+
+            } else {
+                throw new RuntimeException("El ID de parada no existe. No se puede crear la nueva parada favorita.");
+            }
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }
-       // oSessionService.onlyAdminsOrUsers();
-       nuevaParadaFav.setId(null);
+
+        oSessionService.onlyAdminsOrUsers();
+        nuevaParadaFav.setId(null);
         return oParadaFavRepository.save(nuevaParadaFav).getId();
-        
+
     }
 
     public ParadaFavEntity update(ParadaFavEntity oParadaFavEntityToSet) {
@@ -75,15 +87,17 @@ public ParadaFavEntity get(Long id) {
         oParadaFavRepository.deleteById(id);
         return id;
     }
+
     @Transactional
     public Long empty() {
-       // oSessionService.onlyAdmins();
-       oParadaFavRepository.deleteAll();
-       oParadaFavRepository.resetAutoIncrement();
+        // oSessionService.onlyAdmins();
+        oParadaFavRepository.deleteAll();
+        oParadaFavRepository.resetAutoIncrement();
         oParadaFavRepository.flush();
         return oParadaFavRepository.count();
     }
- /**
+
+    /**
      * Verifica si un identificador dado existe en la API mediante una solicitud
      * HTTP.
      *
@@ -131,10 +145,22 @@ public ParadaFavEntity get(Long id) {
             return false;
         }
     }
+
     public List<ParadaFavEntity> getParadasFavoritasByUserId(Long userId) {
-        // Puedes ajustar el nombre del método según la convención de nombres que prefieras
         Page<ParadaFavEntity> page = oParadaFavRepository.findByUserId(userId, null);
         return page.getContent();
+    }
+
+    /**
+     * Verifica si un id_parada ya existe para un usuario específico.
+     *
+     * @param id_parada El identificador de la parada.
+     * @param userId    El identificador del usuario.
+     * @return true si el id_parada ya existe para el usuario, false en caso
+     *         contrario.
+     */
+    private boolean paradaFavExistsForUser(Long id_parada, Long userId) {
+        return oParadaFavRepository.existsByUserIdAndId_parada(userId, id_parada);
     }
 
 }
