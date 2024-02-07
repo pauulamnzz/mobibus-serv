@@ -1,5 +1,8 @@
 package net.ausiasmarch.mobibus.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,24 +17,25 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 @RequestMapping("/api")
 public class EmtApi {
+    
     @GetMapping("/data")
-    public String scrapeWebsite(@RequestParam("id") String id) {
+    public List<String> scrapeWebsite(@RequestParam("id") String id) {
         // Construir la URL con el ID de la parada
         String url = "http://www.emtvalencia.es/QR.php?sec=est&p=" + id;
-    
+
         // Hacer la solicitud GET a la URL
         RestTemplate restTemplate = new RestTemplate();
         String html = restTemplate.getForObject(url, String.class);
-    
+
         // Parsear el HTML y extraer los divs deseados
         Document doc = Jsoup.parse(html);
         Elements divs = doc.select("div[style*=padding-left]");
-        StringBuilder result = new StringBuilder();
+        List<String> result = new ArrayList<>();
         for (Element div : divs) {
-            // Extraer solo el texto dentro del div y agregarlo al resultado
-            result.append(div.text()).append("\n");
+            // Extraer solo el texto dentro del div y agregarlo a la lista de resultados
+            result.add(div.text());
         }
-        return result.toString();
+        return result;
     }
 
 
