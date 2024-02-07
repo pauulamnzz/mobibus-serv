@@ -35,6 +35,7 @@ public class EmtApi {
         List<ParadaEmtEntity> result = new ArrayList<>();
         String numParada = null; // Variable para almacenar el número de parada
         String nomParada = null; // Variable para almacenar el nombre de la parada
+        String numLinea = null; // Variable para almacenar el número de la línea
         for (int i = 0; i < divs.size(); i++) {
             Element div = divs.get(i);
             // Extraer el texto dentro del div
@@ -53,7 +54,7 @@ public class EmtApi {
                             nomParada += " - " + parts[j];
                         }
                     }
-                    result.add(new ParadaEmtEntity(numParada, nomParada, null, null)); // Agregar objeto ParadaEmtEntity al resultado
+                    result.add(new ParadaEmtEntity(numParada, nomParada, null, null, null)); // Agregar objeto ParadaEmtEntity al resultado
                 } else {
                     // Manejar el caso donde no hay suficientes elementos
                     // Puedes lanzar una excepción, agregar un objeto con valores predeterminados, etc.
@@ -62,33 +63,27 @@ public class EmtApi {
                 // Resto de elementos: solo nombre de la parada
                 String nomLinea = parts[0]; // El primer elemento se considera como nombre de la línea
                 String tiempo = parts.length > 1 ? parts[1] : null; // Si hay un segundo elemento, se considera como tiempo
+                
+                // Buscar todas las imágenes dentro del div actual
+                Elements images = div.select("img[title]");
+                for (Element image : images) {
+                    String title = image.attr("title"); // Obtener el título de la imagen
+                    if (!title.isEmpty()) {
+                        numLinea = title; // Usar el título como número de línea si es un número
+                    }
+                }
+                
                 if (!"Descarga APP".equals(nomLinea)) { // Filtrar la línea "Descarga APP"
-                    result.add(new ParadaEmtEntity(numParada, nomParada, nomLinea, tiempo)); // Agregar objeto ParadaEmtEntity al resultado
+                    result.add(new ParadaEmtEntity(numParada, nomParada, nomLinea, tiempo, numLinea)); // Agregar objeto ParadaEmtEntity al resultado
                 }
             }
         }
         return result;
     }
+    
 
 
 
 
-    // @GetMapping("/data")
-    // public String scrapeWebsite(@RequestParam("id") String id) {
-    //     // Construir la URL con el ID de la parada
-    //     String url = "http://www.emtvalencia.es/QR.php?sec=est&p=" + id;
 
-    //     // Hacer la solicitud GET a la URL
-    //     RestTemplate restTemplate = new RestTemplate();
-    //     String html = restTemplate.getForObject(url, String.class);
-
-    //     // Parsear el HTML y extraer los divs deseados
-    //     Document doc = Jsoup.parse(html);
-    //     Elements divs = doc.select("div[style*=padding-left]");
-    //     StringBuilder result = new StringBuilder();
-    //     for (Element div : divs) {
-    //         result.append(div.outerHtml()).append("\n");
-    //     }
-    //     return result.toString();
-    // }
 }

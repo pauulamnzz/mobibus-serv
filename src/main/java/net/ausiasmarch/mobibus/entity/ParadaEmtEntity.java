@@ -5,12 +5,15 @@ public class ParadaEmtEntity {
     private String nomParada;
     private String nomLinea;
     private String tiempo;
+    private String numLinea;
 
-    public ParadaEmtEntity(String numParada, String nomParada, String nomLinea, String tiempo) {
+    public ParadaEmtEntity(String numParada, String nomParada, String nomLinea,
+     String tiempo, String numLinea) {
         this.numParada = numParada;
         this.nomParada = nomParada;
         this.nomLinea = nomLinea;
         this.tiempo = tiempo;
+        this.numLinea = numLinea;
     }
 
     public ParadaEmtEntity(String numParada, String nomParada) {
@@ -49,6 +52,14 @@ public class ParadaEmtEntity {
 
     public void setNumParada(String numParada) {
         this.numParada = numParada;
+    }
+
+    public String getNumLinea() {
+        return numLinea;
+    }
+
+    public void setNumLinea(String numLinea) {
+        this.numLinea = numLinea;
     }
 }
 
