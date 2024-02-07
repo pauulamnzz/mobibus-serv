@@ -33,4 +33,25 @@ public class EmtApi {
         }
         return result.toString();
     }
+
+
+
+    // @GetMapping("/data")
+    // public String scrapeWebsite(@RequestParam("id") String id) {
+    //     // Construir la URL con el ID de la parada
+    //     String url = "http://www.emtvalencia.es/QR.php?sec=est&p=" + id;
+
+    //     // Hacer la solicitud GET a la URL
+    //     RestTemplate restTemplate = new RestTemplate();
+    //     String html = restTemplate.getForObject(url, String.class);
+
+    //     // Parsear el HTML y extraer los divs deseados
+    //     Document doc = Jsoup.parse(html);
+    //     Elements divs = doc.select("div[style*=padding-left]");
+    //     StringBuilder result = new StringBuilder();
+    //     for (Element div : divs) {
+    //         result.append(div.outerHtml()).append("\n");
+    //     }
+    //     return result.toString();
+    // }
 }
