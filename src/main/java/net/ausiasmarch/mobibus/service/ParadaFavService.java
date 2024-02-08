@@ -31,7 +31,6 @@ public class ParadaFavService {
     SessionService oSessionService;
 
     public ParadaFavEntity get(Long id) {
-        oSessionService.onlyAdmins();
         return oParadaFavRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Thread not found"));
 
     }
