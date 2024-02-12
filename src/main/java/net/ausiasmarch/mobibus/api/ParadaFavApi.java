@@ -20,46 +20,62 @@ import org.springframework.web.bind.annotation.RestController;
 import net.ausiasmarch.mobibus.entity.UserEntity;
 import net.ausiasmarch.mobibus.entity.ParadaFavEntity;
 import net.ausiasmarch.mobibus.service.ParadaFavService;
+
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/parada_fav")
 public class ParadaFavApi {
-    
-@Autowired
-ParadaFavService oParadaFavService;
+
+    @Autowired
+    ParadaFavService oParadaFavService;
 
     @PostMapping("")
     public ResponseEntity<Long> create(@RequestBody ParadaFavEntity oParadaFavEntity) {
-    return ResponseEntity.ok(oParadaFavService.create(oParadaFavEntity));
+        return ResponseEntity.ok(oParadaFavService.create(oParadaFavEntity));
     }
-     @PutMapping("")
+
+    @PostMapping("/byUser")
+    public ResponseEntity<Long> createbyUser(@RequestBody ParadaFavEntity oParadaFavEntity) {
+        return ResponseEntity.ok(oParadaFavService.create(oParadaFavEntity));
+    }
+
+    @PutMapping("")
     public ResponseEntity<ParadaFavEntity> update(@RequestBody ParadaFavEntity oParadaFavEntity) {
         return ResponseEntity.ok(oParadaFavService.update(oParadaFavEntity));
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<ParadaFavEntity> get(@PathVariable("id") Long id) {
         return ResponseEntity.ok(oParadaFavService.get(id));
     }
-       @GetMapping("")
-    public ResponseEntity<Page<ParadaFavEntity>> getPage(Pageable oPageable) {
-        return ResponseEntity.ok(oParadaFavService.getPage(oPageable));
+
+    // @GetMapping("")
+    // public ResponseEntity<Page<ParadaFavEntity>> getPage(Pageable oPageable,
+    //         @RequestParam(name = "userid", required = false) Long userid) {
+    //     return ResponseEntity.ok(oParadaFavService.getPage(oPageable, userid));
+    // }
+    @GetMapping("")
+    public ResponseEntity<Page<ParadaFavEntity>> getPage(Pageable oPageable,
+            @RequestParam(value = "user", defaultValue = "0", required = false) Long userId) {
+        return ResponseEntity.ok(oParadaFavService.getPage(oPageable, userId));
     }
-    
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable("id") Long id) {
         return ResponseEntity.ok(oParadaFavService.delete(id));
     }
+
     @DeleteMapping("/empty")
     public ResponseEntity<Long> empty() {
         return ResponseEntity.ok(oParadaFavService.empty());
     }
+
     @GetMapping("/fav/{userId}")
     public ResponseEntity<List<ParadaFavEntity>> getParadasFavoritasByUserId(@PathVariable Long userId) {
         List<ParadaFavEntity> paradasFavoritas = oParadaFavService.getParadasFavoritasByUserId(userId);
         return ResponseEntity.ok(paradasFavoritas);
     }
 
-   @GetMapping("/exists")
+    @GetMapping("/exists")
     public ResponseEntity<Boolean> checkParadaFavExistsForUser(
             @RequestParam Long idParada,
             @RequestParam Long userId) {

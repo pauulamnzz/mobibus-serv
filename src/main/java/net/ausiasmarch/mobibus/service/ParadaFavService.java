@@ -35,11 +35,19 @@ public class ParadaFavService {
 
     }
 
-    public Page<ParadaFavEntity> getPage(Pageable oPageable) {
-        return oParadaFavRepository.findAll(oPageable);
+    public Page<ParadaFavEntity> getPage(Pageable oPageable, Long userId) {
+
+        if (userId == 0) {
+            return oParadaFavRepository.findAll(oPageable);
+
+        } else {
+            return oParadaFavRepository.findByUserId(userId, oPageable);
+
+        }
     }
 
     public Long create(ParadaFavEntity nuevaParadaFav) {
+        oSessionService.onlyAdmins();
         Long id_parada = nuevaParadaFav.getId_parada();
         Long userId = nuevaParadaFav.getUser().getId();
         try {
@@ -50,7 +58,6 @@ public class ParadaFavService {
                 } else {
                     throw new RuntimeException(
                             "El ID de parada ya existe para el usuario. No se puede crear la nueva parada favorita.");
-
                 }
 
             } else {
@@ -59,12 +66,36 @@ public class ParadaFavService {
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }
-
-        oSessionService.onlyAdminsOrUsers();
         nuevaParadaFav.setId(null);
         return oParadaFavRepository.save(nuevaParadaFav).getId();
 
     }
+
+    public Long createbyUser(ParadaFavEntity nuevaParadaFav) {
+        oSessionService.onlyAdminsOrUsersWithIisOwnData(oSessionService.getSessionUser().getId());
+        Long id_parada = nuevaParadaFav.getId_parada();
+        Long userId =oSessionService.getSessionUser().getId();
+        try {
+            if (checkIdExists(id_parada)) {
+                if (!paradaFavExistsForUser(id_parada, userId)) {
+                    oParadaFavRepository.save(nuevaParadaFav);
+                    return nuevaParadaFav.getId();
+                } else {
+                    throw new RuntimeException(
+                            "El ID de parada ya existe para el usuario. No se puede crear la nueva parada favorita.");
+                }
+
+            } else {
+                throw new RuntimeException("El ID de parada no existe. No se puede crear la nueva parada favorita.");
+            }
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+        nuevaParadaFav.setId(null);
+        return oParadaFavRepository.save(nuevaParadaFav).getId();
+
+    }
+
 
     public ParadaFavEntity update(ParadaFavEntity oParadaFavEntityToSet) {
         ParadaFavEntity oParadaFavEntityFromDatabase = this.get(oParadaFavEntityToSet.getId());
