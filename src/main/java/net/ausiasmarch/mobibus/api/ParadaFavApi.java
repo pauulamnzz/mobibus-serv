@@ -34,10 +34,7 @@ public class ParadaFavApi {
         return ResponseEntity.ok(oParadaFavService.create(oParadaFavEntity));
     }
 
-    @PostMapping("/byUser")
-    public ResponseEntity<Long> createbyUser(@RequestBody ParadaFavEntity oParadaFavEntity) {
-        return ResponseEntity.ok(oParadaFavService.create(oParadaFavEntity));
-    }
+
 
     @PutMapping("")
     public ResponseEntity<ParadaFavEntity> update(@RequestBody ParadaFavEntity oParadaFavEntity) {
@@ -49,11 +46,7 @@ public class ParadaFavApi {
         return ResponseEntity.ok(oParadaFavService.get(id));
     }
 
-    // @GetMapping("")
-    // public ResponseEntity<Page<ParadaFavEntity>> getPage(Pageable oPageable,
-    //         @RequestParam(name = "userid", required = false) Long userid) {
-    //     return ResponseEntity.ok(oParadaFavService.getPage(oPageable, userid));
-    // }
+
     @GetMapping("")
     public ResponseEntity<Page<ParadaFavEntity>> getPage(Pageable oPageable,
             @RequestParam(value = "user", defaultValue = "0", required = false) Long userId) {

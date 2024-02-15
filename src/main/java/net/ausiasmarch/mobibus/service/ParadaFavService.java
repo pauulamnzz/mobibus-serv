@@ -110,7 +110,7 @@ public class ParadaFavService {
             return oParadaFavRepository.save(oParadaFavEntityToSet);
         }
     }
-
+@Transactional
     public Long delete(Long id) {
         ParadaFavEntity oParadaFavEntityFromDatabase = this.get(id);
         oSessionService.onlyAdminsOrUsersWithIisOwnData(oParadaFavEntityFromDatabase.getUser().getId());
@@ -120,7 +120,7 @@ public class ParadaFavService {
 
     @Transactional
     public Long empty() {
-        // oSessionService.onlyAdmins();
+        oSessionService.onlyAdmins();
         oParadaFavRepository.deleteAll();
         oParadaFavRepository.resetAutoIncrement();
         oParadaFavRepository.flush();
