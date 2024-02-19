@@ -47,7 +47,7 @@ public class ParadaFavService {
     }
 
     public Long create(ParadaFavEntity nuevaParadaFav) {
-        oSessionService.onlyAdmins();
+       // oSessionService.onlyAdmins();
         Long id_parada = nuevaParadaFav.getId_parada();
         Long userId = nuevaParadaFav.getUser().getId();
         try {
