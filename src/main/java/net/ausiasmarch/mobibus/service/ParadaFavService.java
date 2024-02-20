@@ -36,6 +36,7 @@ public class ParadaFavService {
     }
 
     public Page<ParadaFavEntity> getPage(Pageable oPageable, Long userId) {
+        oSessionService.onlyAdmins();
 
         if (userId == 0) {
             return oParadaFavRepository.findAll(oPageable);
@@ -47,9 +48,10 @@ public class ParadaFavService {
     }
 
     public Long create(ParadaFavEntity nuevaParadaFav) {
-       // oSessionService.onlyAdmins();
+     
         Long id_parada = nuevaParadaFav.getId_parada();
         Long userId = nuevaParadaFav.getUser().getId();
+        oSessionService.onlyAdminsOrUsersWithIisOwnData(userId);
         try {
             if (checkIdExists(id_parada)) {
                 if (!paradaFavExistsForUser(id_parada, userId)) {
@@ -71,35 +73,11 @@ public class ParadaFavService {
 
     }
 
-    public Long createbyUser(ParadaFavEntity nuevaParadaFav) {
-        oSessionService.onlyAdminsOrUsersWithIisOwnData(oSessionService.getSessionUser().getId());
-        Long id_parada = nuevaParadaFav.getId_parada();
-        Long userId =oSessionService.getSessionUser().getId();
-        try {
-            if (checkIdExists(id_parada)) {
-                if (!paradaFavExistsForUser(id_parada, userId)) {
-                    oParadaFavRepository.save(nuevaParadaFav);
-                    return nuevaParadaFav.getId();
-                } else {
-                    throw new RuntimeException(
-                            "El ID de parada ya existe para el usuario. No se puede crear la nueva parada favorita.");
-                }
-
-            } else {
-                throw new RuntimeException("El ID de parada no existe. No se puede crear la nueva parada favorita.");
-            }
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-        }
-        nuevaParadaFav.setId(null);
-        return oParadaFavRepository.save(nuevaParadaFav).getId();
-
-    }
 
 
     public ParadaFavEntity update(ParadaFavEntity oParadaFavEntityToSet) {
-        ParadaFavEntity oParadaFavEntityFromDatabase = this.get(oParadaFavEntityToSet.getId());
-        oSessionService.onlyAdminsOrUsersWithIisOwnData(oParadaFavEntityFromDatabase.getUser().getId());
+        oSessionService.onlyAdmins();
+       this.get(oParadaFavEntityToSet.getId());
         if (oSessionService.isUser()) {
             if (oParadaFavEntityToSet.getUser().getId().equals(oSessionService.getSessionUser().getId())) {
                 return oParadaFavRepository.save(oParadaFavEntityToSet);

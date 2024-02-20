@@ -29,6 +29,7 @@ public class UserService {
         return oUserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
    public Page<UserEntity> getPage(Pageable oPageable) {
+        oSessionService.onlyAdmins();   
         return oUserRepository.findAll(oPageable);
     } 
  
