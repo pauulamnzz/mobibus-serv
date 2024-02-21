@@ -19,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 public class UserService {
     private final String foxforumPASSWORD = "e2cac5c5f7e52ab03441bb70e89726ddbd1f6e5b683dde05fb65e0720290179e";
 
-
     @Autowired
     UserRepository oUserRepository;
 
@@ -28,22 +27,21 @@ public class UserService {
 
     @Autowired
     SessionService oSessionService;
-    
+
     @Autowired
     ParadaFavRepository oParadaFavRepository;
-
 
     public UserEntity get(Long id) {
         return oUserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuari no trobat"));
     }
-   public Page<UserEntity> getPage(Pageable oPageable) {
-        oSessionService.onlyAdmins();   
-        return oUserRepository.findAll(oPageable);
-    } 
- 
 
-        public Long create(UserEntity oUserEntity) {
-       oSessionService.onlyAdmins();
+    public Page<UserEntity> getPage(Pageable oPageable) {
+        oSessionService.onlyAdmins();
+        return oUserRepository.findAll(oPageable);
+    }
+
+    public Long create(UserEntity oUserEntity) {
+        oSessionService.onlyAdmins();
         oUserEntity.setId(null);
         oUserEntity.setPassword(foxforumPASSWORD);
         return oUserRepository.save(oUserEntity).getId();
@@ -53,39 +51,46 @@ public class UserService {
         return oUserRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuari no trobat per username"));
     }
+
     public Long delete(Long id) {
         oSessionService.onlyAdmins();
         oUserRepository.deleteById(id);
         return id;
     }
+
     public UserEntity update(UserEntity oUserEntityToSet) {
         UserEntity oUserEntityFromDatabase = this.get(oUserEntityToSet.getId());
-       oSessionService.onlyAdminsOrUsersWithIisOwnData(oUserEntityFromDatabase.getId());
-        if (oSessionService.isUser()) {            
+        oSessionService.onlyAdminsOrUsersWithIisOwnData(oUserEntityFromDatabase.getId());
+        if (oSessionService.isUser()) {
             oUserEntityToSet.setRole(oUserEntityFromDatabase.getRole());
             oUserEntityToSet.setPassword(foxforumPASSWORD);
             return oUserRepository.save(oUserEntityToSet);
-        } else {            
+        } else {
             oUserEntityToSet.setPassword(foxforumPASSWORD);
             return oUserRepository.save(oUserEntityToSet);
         }
     }
-    @Transactional
-public Long empty() {
-    oSessionService.onlyAdmins();
-    List<UserEntity> usuarios = oUserRepository.findAll();
-    // Iterar sobre cada usuario
-    for (UserEntity usuario : usuarios) {
-        // Obtener todas las paradas favoritas asociadas con el usuario actual
-        List<ParadaFavEntity> paradasFavs = oParadaFavRepository.findByUser(usuario);
-        // Verificar si el usuario no tiene paradas favoritas asociadas
-        if (paradasFavs.isEmpty()) {
-            // Si el usuario no tiene paradas favoritas asociadas, eliminar el usuario
-            oUserRepository.delete(usuario);
-        }
-    }
 
-    oUserRepository.resetAutoIncrement();
-    return oUserRepository.count();
-}
+    @Transactional
+    public Long empty() {
+        oSessionService.onlyAdmins();
+        List<UserEntity> usuarios = oUserRepository.findAll();
+        // Iterar sobre cada usuario
+        for (UserEntity usuario : usuarios) {
+            // Obtener todas las paradas favoritas asociadas con el usuario actual
+            List<ParadaFavEntity> paradasFavs = oParadaFavRepository.findByUser(usuario);
+            // Verificar si el usuario no tiene paradas favoritas asociadas
+            if (paradasFavs.isEmpty()) {
+                // Si el usuario no tiene paradas favoritas asociadas, eliminar el usuario
+                oUserRepository.delete(usuario);
+            }
+        }
+
+        oUserRepository.resetAutoIncrement();
+        UserEntity oJugadorEntity1 = new UserEntity("Paula", foxforumPASSWORD, "asdd@gmail.com", false);
+        oUserRepository.save(oJugadorEntity1);
+        oJugadorEntity1 = new UserEntity("Hugo", foxforumPASSWORD, "taric@gmail.com", true);
+        oUserRepository.save(oJugadorEntity1);
+        return oUserRepository.count();
+    }
 }
