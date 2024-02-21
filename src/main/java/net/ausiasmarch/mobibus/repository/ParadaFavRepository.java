@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import jakarta.transaction.Transactional;
 import net.ausiasmarch.mobibus.entity.ParadaFavEntity;
 
 public interface ParadaFavRepository extends JpaRepository<ParadaFavEntity, Long> {
@@ -21,5 +22,8 @@ public interface ParadaFavRepository extends JpaRepository<ParadaFavEntity, Long
     boolean existsByUserIdAndId_parada(@Param("userId") Long userId, @Param("id_parada") Long id_parada);
 
     
-
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM ParadaFavEntity p WHERE p.user IS NOT NULL")
+    void deleteAllByUserIsNotNull();
 }

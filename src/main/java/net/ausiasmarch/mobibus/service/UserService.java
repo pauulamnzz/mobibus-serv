@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import net.ausiasmarch.mobibus.entity.UserEntity;
 import net.ausiasmarch.mobibus.exception.ResourceNotFoundException;
+import net.ausiasmarch.mobibus.repository.ParadaFavRepository;
 import net.ausiasmarch.mobibus.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,10 @@ public class UserService {
     @Autowired
     SessionService oSessionService;
     
+    @Autowired
+    ParadaFavRepository oParadaFavRepository;
+
+
     public UserEntity get(Long id) {
         return oUserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
@@ -67,6 +72,7 @@ public class UserService {
         oSessionService.onlyAdmins();
         oUserRepository.deleteAll();
         oUserRepository.resetAutoIncrement();
+        oParadaFavRepository.deleteAllByUserIsNotNull();
         UserEntity oJugadorEntity1 = new UserEntity("Paula",foxforumPASSWORD, "asdd@gmail.com",  false);
                 oUserRepository.save(oJugadorEntity1);
         oJugadorEntity1 = new UserEntity("Hugo",foxforumPASSWORD, "taric@gmail.com", true);
