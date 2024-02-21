@@ -12,7 +12,7 @@ import net.ausiasmarch.mobibus.entity.ParadaFavEntity;
 public interface ParadaFavRepository extends JpaRepository<ParadaFavEntity, Long> {
 
     @Modifying
-    @Query(value = "ALTER TABLE user_parada_fav AUTO_INCREMENT = 1", nativeQuery = true)
+    @Query(value = "ALTER TABLE parada_fav AUTO_INCREMENT = 1", nativeQuery = true)
     void resetAutoIncrement();
 
     Page<ParadaFavEntity> findByUserId(Long id, Pageable pageable);
