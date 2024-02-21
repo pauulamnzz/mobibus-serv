@@ -22,7 +22,7 @@ public class SessionService {
     
     public String login(UserBean oUserBean) {
         oUserRepository.findByUsernameAndPassword(oUserBean.getUsername(), oUserBean.getPassword())
-                .orElseThrow(() -> new ResourceNotFoundException("Wrong User or password"));
+                .orElseThrow(() -> new ResourceNotFoundException("Error en usuari o contrasenya"));
         return JWTHelper.generateJWT(oUserBean.getUsername());
     }
 
@@ -52,7 +52,7 @@ public class SessionService {
 public Boolean isAdmin() {
         if (this.getSessionUsername() != null) {
             UserEntity oUserEntityInSession = oUserRepository.findByUsername(this.getSessionUsername())
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Usuari no trobat"));
             return Boolean.FALSE.equals(oUserEntityInSession.getRole());
         } else {
             return false;
@@ -62,7 +62,7 @@ public Boolean isAdmin() {
     public Boolean isUser() {
         if (this.getSessionUsername() != null) {
             UserEntity oUserEntityInSession = oUserRepository.findByUsername(this.getSessionUsername())
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Usuari no trobat"));
             return Boolean.TRUE.equals(oUserEntityInSession.getRole());
         } else {
             return false;
@@ -71,19 +71,19 @@ public Boolean isAdmin() {
 
     public void onlyAdmins() {
         if (!this.isAdmin()) {
-            throw new UnauthorizedException("Only admins can do this");
+            throw new UnauthorizedException("Només els administradors están autoritzats");
         }
     }
 
     public void onlyUsers() {
         if (!this.isUser()) {
-            throw new UnauthorizedException("Only users can do this");
+            throw new UnauthorizedException("Només els administradors están autoritzats");
         }
     }
 
     public void onlyAdminsOrUsers() {
         if (!this.isSessionActive()) {
-            throw new UnauthorizedException("Only admins or users can do this");
+            throw new UnauthorizedException("Només els administradors o usuaris están autoritzats");
         }
     }
 
@@ -91,15 +91,15 @@ public Boolean isAdmin() {
         if (this.isSessionActive()) {
             if (!this.isAdmin()) {
                 if (!this.isUser()) {
-                    throw new UnauthorizedException("Only admins or users can do this");
+                    throw new UnauthorizedException("Només els administradors o usuaris están autoritzats");
                 } else {
                     if (!this.getSessionUser().getId().equals(id_user)) {
-                        throw new UnauthorizedException("Only admins or users with its own data can do this");
+                        throw new UnauthorizedException("Només els administradors o usuarios amb la seua informació están autoritzats");
                     }
                 }
             }
         } else {
-            throw new UnauthorizedException("Only admins or users can do this");
+            throw new UnauthorizedException("Només els administradors o usuaris están autoritzats");
         }
     }
 }

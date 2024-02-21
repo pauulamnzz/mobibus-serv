@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class ParadaFavService {
     SessionService oSessionService;
 
     public ParadaFavEntity get(Long id) {
-        return oParadaFavRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Thread not found"));
+        return oParadaFavRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Parada favorita no trobada"));
 
     }
 
@@ -59,11 +58,11 @@ public class ParadaFavService {
                     return nuevaParadaFav.getId();
                 } else {
                     throw new RuntimeException(
-                            "El ID de parada ya existe para el usuario. No se puede crear la nueva parada favorita.");
+                            "El ID de parada ja existeix per a l'usuari. No es pot crear la nova parada favorita.");
                 }
 
             } else {
-                throw new RuntimeException("El ID de parada no existe. No se puede crear la nueva parada favorita.");
+                throw new RuntimeException("L'ID de la parada no existeix. No es pot crear la nova parada favorita.");
             }
         } catch (java.io.IOException e) {
             e.printStackTrace();
@@ -82,7 +81,7 @@ public class ParadaFavService {
             if (oParadaFavEntityToSet.getUser().getId().equals(oSessionService.getSessionUser().getId())) {
                 return oParadaFavRepository.save(oParadaFavEntityToSet);
             } else {
-                throw new ResourceNotFoundException("Unauthorized");
+                throw new ResourceNotFoundException("No autoritzat");
             }
         } else {
             return oParadaFavRepository.save(oParadaFavEntityToSet);
@@ -129,7 +128,7 @@ public class ParadaFavService {
 
             // Enviar la solicitud HTTP y obtener la respuesta
             HttpResponse<String> oHttpResponse = oHttpClient.send(oHttpRequest, HttpResponse.BodyHandlers.ofString());
-            Logger.getLogger(getClass().getName()).info("API Response: " + oHttpResponse.body());
+            Logger.getLogger(getClass().getName()).info("Resposta API: " + oHttpResponse.body());
 
             // Verificar si la respuesta es exitosa (código 2xx) y si contiene datos
             if (oHttpResponse.statusCode() == HttpStatus.OK.value()) {
@@ -149,7 +148,7 @@ public class ParadaFavService {
         } catch (IOException | InterruptedException e) {
             // Loguear cualquier excepción para propósitos de depuración
             Logger.getLogger(getClass().getName())
-                    .severe("Error al verificar la existencia del ID en la API: " + e.getMessage());
+                    .severe("Error en verificar l'existència de l'ID en l'API:" + e.getMessage());
             return false;
         }
     }

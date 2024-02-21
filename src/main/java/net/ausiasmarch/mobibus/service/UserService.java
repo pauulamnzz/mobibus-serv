@@ -34,7 +34,7 @@ public class UserService {
 
 
     public UserEntity get(Long id) {
-        return oUserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return oUserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuari no trobat"));
     }
    public Page<UserEntity> getPage(Pageable oPageable) {
         oSessionService.onlyAdmins();   
@@ -51,7 +51,7 @@ public class UserService {
 
     public UserEntity getByUsername(String username) {
         return oUserRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found by username"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuari no trobat per username"));
     }
     public Long delete(Long id) {
         oSessionService.onlyAdmins();
