@@ -1,10 +1,13 @@
 package net.ausiasmarch.mobibus.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import net.ausiasmarch.mobibus.entity.ParadaFavEntity;
 import net.ausiasmarch.mobibus.entity.UserEntity;
 import net.ausiasmarch.mobibus.exception.ResourceNotFoundException;
 import net.ausiasmarch.mobibus.repository.ParadaFavRepository;
@@ -68,15 +71,21 @@ public class UserService {
         }
     }
     @Transactional
-    public Long empty() {
-        oSessionService.onlyAdmins();
-        oUserRepository.deleteAll();
-        oUserRepository.resetAutoIncrement();
-        oParadaFavRepository.deleteAllByUserIsNotNull();
-        UserEntity oJugadorEntity1 = new UserEntity("Paula",foxforumPASSWORD, "asdd@gmail.com",  false);
-                oUserRepository.save(oJugadorEntity1);
-        oJugadorEntity1 = new UserEntity("Hugo",foxforumPASSWORD, "taric@gmail.com", true);
-                oUserRepository.save(oJugadorEntity1);
-        return oUserRepository.count();
+public Long empty() {
+    oSessionService.onlyAdmins();
+    List<UserEntity> usuarios = oUserRepository.findAll();
+    // Iterar sobre cada usuario
+    for (UserEntity usuario : usuarios) {
+        // Obtener todas las paradas favoritas asociadas con el usuario actual
+        List<ParadaFavEntity> paradasFavs = oParadaFavRepository.findByUser(usuario);
+        // Verificar si el usuario no tiene paradas favoritas asociadas
+        if (paradasFavs.isEmpty()) {
+            // Si el usuario no tiene paradas favoritas asociadas, eliminar el usuario
+            oUserRepository.delete(usuario);
+        }
     }
+
+    oUserRepository.resetAutoIncrement();
+    return oUserRepository.count();
+}
 }
