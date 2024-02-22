@@ -87,10 +87,10 @@ public class UserService {
         }
 
         oUserRepository.resetAutoIncrement();
-        UserEntity oJugadorEntity1 = new UserEntity("Paula", foxforumPASSWORD, "asdd@gmail.com", false);
-        oUserRepository.save(oJugadorEntity1);
-        oJugadorEntity1 = new UserEntity("Hugo", foxforumPASSWORD, "taric@gmail.com", true);
-        oUserRepository.save(oJugadorEntity1);
+        // UserEntity oJugadorEntity1 = new UserEntity("Paula", foxforumPASSWORD, "asdd@gmail.com", false);
+        // oUserRepository.save(oJugadorEntity1);
+        // oJugadorEntity1 = new UserEntity("Hugo", foxforumPASSWORD, "taric@gmail.com", true);
+        // oUserRepository.save(oJugadorEntity1);
         return oUserRepository.count();
     }
 }
