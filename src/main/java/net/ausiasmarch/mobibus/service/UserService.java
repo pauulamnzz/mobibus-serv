@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 
 @Service
 public class UserService {
-    private final String foxforumPASSWORD = "e2cac5c5f7e52ab03441bb70e89726ddbd1f6e5b683dde05fb65e0720290179e";
+    private final String mobibusPASSWORD = "27a104fe5c6970d18c073f686cca72ec9c4b1ec187b7537ed6144fe76baac8c1";
 
     @Autowired
     UserRepository oUserRepository;
@@ -43,7 +43,7 @@ public class UserService {
     public Long create(UserEntity oUserEntity) {
         oSessionService.onlyAdmins();
         oUserEntity.setId(null);
-        oUserEntity.setPassword(foxforumPASSWORD);
+        oUserEntity.setPassword(mobibusPASSWORD);
         return oUserRepository.save(oUserEntity).getId();
     }
 
@@ -63,10 +63,10 @@ public class UserService {
         oSessionService.onlyAdminsOrUsersWithIisOwnData(oUserEntityFromDatabase.getId());
         if (oSessionService.isUser()) {
             oUserEntityToSet.setRole(oUserEntityFromDatabase.getRole());
-            oUserEntityToSet.setPassword(foxforumPASSWORD);
+            oUserEntityToSet.setPassword(mobibusPASSWORD);
             return oUserRepository.save(oUserEntityToSet);
         } else {
-            oUserEntityToSet.setPassword(foxforumPASSWORD);
+            oUserEntityToSet.setPassword(mobibusPASSWORD);
             return oUserRepository.save(oUserEntityToSet);
         }
     }
@@ -87,9 +87,9 @@ public class UserService {
         }
 
         oUserRepository.resetAutoIncrement();
-        // UserEntity oJugadorEntity1 = new UserEntity("Paula", foxforumPASSWORD, "asdd@gmail.com", false);
+        // UserEntity oJugadorEntity1 = new UserEntity("Paula", mobibusPASSWORD, "asdd@gmail.com", false);
         // oUserRepository.save(oJugadorEntity1);
-        // oJugadorEntity1 = new UserEntity("Hugo", foxforumPASSWORD, "taric@gmail.com", true);
+        // oJugadorEntity1 = new UserEntity("Hugo", mobibusPASSWORD, "taric@gmail.com", true);
         // oUserRepository.save(oJugadorEntity1);
         return oUserRepository.count();
     }
