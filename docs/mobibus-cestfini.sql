@@ -20,7 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `mobibus`
 --
-
+CREATE DATABASE mobibus;
+USE mobibus;
 -- --------------------------------------------------------
 
 --
@@ -93,9 +94,9 @@ INSERT INTO `parada_fav` (`id`, `alias`, `id_parada`, `id_user`) VALUES
 
 CREATE TABLE `user` (
   `id` bigint NOT NULL,
-  `username` varchar(255) CHARACTER SET utf16 COLLATE utf16_unicode_ci NOT NULL,
+  `username` varchar(255) CHARACTER SET utf16 COLLATE utf16_unicode_ci NOT NULL UNIQUE,
   `password` varchar(255) CHARACTER SET utf16 COLLATE utf16_unicode_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf16 COLLATE utf16_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf16 COLLATE utf16_unicode_ci NOT NULL UNIQUE,
   `role` tinyint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -131,8 +132,7 @@ INSERT INTO `user` (`id`, `username`, `password`, `email`, `role`) VALUES
 (25, 'Antonia', 'e2cac5c5f7e52ab03441bb70e89726ddbd1f6e5b683dde05fb65e0720290179e', 'antonia@hotmail.com', 1),
 (26, 'Roberto', 'e2cac5c5f7e52ab03441bb70e89726ddbd1f6e5b683dde05fb65e0720290179e', 'roberto@yahoo.com', 0),
 (27, 'Marta', 'e2cac5c5f7e52ab03441bb70e89726ddbd1f6e5b683dde05fb65e0720290179e', 'marta@gmail.com', 1),
-(28, 'Javier', 'e2cac5c5f7e52ab03441bb70e89726ddbd1f6e5b683dde05fb65e0720290179e', 'javier@hotmail.com', 0),
-(30, 'Hugo', 'e2cac5c5f7e52ab03441bb70e89726ddbd1f6e5b683dde05fb65e0720290179e', 'taric@gmail.com', 1);
+(28, 'Javier', 'e2cac5c5f7e52ab03441bb70e89726ddbd1f6e5b683dde05fb65e0720290179e', 'javier@hotmail.com', 0);
 
 --
 -- Índices para tablas volcadas

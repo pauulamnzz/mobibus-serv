@@ -41,10 +41,14 @@ public class UserService {
     }
 
     public Long create(UserEntity oUserEntity) {
-        oSessionService.onlyAdmins();
+      oSessionService.onlyAdmins(); 
+      if(oUserRepository.findByUsername(oUserEntity.getUsername()).isPresent()){
+          throw new ResourceNotFoundException("Usuari ja existent");
+      }else{
         oUserEntity.setId(null);
         oUserEntity.setPassword(mobibusPASSWORD);
         return oUserRepository.save(oUserEntity).getId();
+      }
     }
 
     public UserEntity getByUsername(String username) {
