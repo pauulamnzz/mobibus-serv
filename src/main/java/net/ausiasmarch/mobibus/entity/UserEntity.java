@@ -35,7 +35,7 @@ public class UserEntity {
     @Email
     private String email;
 
-    @NotBlank
+ 
     private Boolean role = false;
 
     @OneToMany(mappedBy = "user", fetch = jakarta.persistence.FetchType.LAZY)

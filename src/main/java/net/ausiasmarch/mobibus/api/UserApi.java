@@ -58,5 +58,15 @@ public class UserApi {
         return ResponseEntity.ok(oUserService.empty());
     }
 
-    
+    @GetMapping("existsByUsername/{username}")
+    public ResponseEntity<Boolean> userExistsByUsername(@PathVariable String username) {
+        boolean exists = oUserService.isUsernameExists(username);
+        return ResponseEntity.ok(exists);
+    }
+
+    @GetMapping("existsByEmail/{email}")
+    public ResponseEntity<Boolean> userExistsByEmail(@PathVariable String email) {
+        boolean exists = oUserService.isEmailExists(email);
+        return ResponseEntity.ok(exists);
+    }
 }

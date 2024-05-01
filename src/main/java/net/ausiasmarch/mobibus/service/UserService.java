@@ -55,7 +55,18 @@ public class UserService {
         return oUserRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuari no trobat per username"));
     }
+    // public UserEntity getByEmail(String email) {
+    //     return oUserRepository.findByEmail(email)
+    //             .orElseThrow(() -> new ResourceNotFoundException("Usuari no trobat per email"));
+    // }
 
+    public boolean isUsernameExists(String username) {
+        return oUserRepository.existsByUsername(username);
+    }
+
+    public boolean isEmailExists(String email) {
+        return oUserRepository.existsByEmail(email);
+    }
     public Long delete(Long id) {
         oSessionService.onlyAdmins();
         oUserRepository.deleteById(id);
