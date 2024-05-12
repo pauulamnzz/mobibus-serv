@@ -28,6 +28,7 @@ public class UserEntity {
     @Size(min = 3, max = 15)
     private String username;
 
+    @Size(min = 5)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password = "e2cac5c5f7e52ab03441bb70e89726ddbd1f6e5b683dde05fb65e0720290179e";
 
