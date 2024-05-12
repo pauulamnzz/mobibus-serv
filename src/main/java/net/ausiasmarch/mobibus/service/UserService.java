@@ -30,7 +30,6 @@ public class UserService {
 
     @Autowired
     ParadaFavRepository oParadaFavRepository;
-
     public UserEntity get(Long id) {
         return oUserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuari no trobat"));
     }
@@ -50,7 +49,15 @@ public class UserService {
         return oUserRepository.save(oUserEntity).getId();
       }
     }
-
+    public Long createAcc(UserEntity oUserEntity) {
+        if(oUserRepository.findByUsername(oUserEntity.getUsername()).isPresent()){
+            throw new ResourceNotFoundException("Usuari ja existent");
+        }else{
+          oUserEntity.setId(null);
+          oUserEntity.setRole(true);
+          return oUserRepository.save(oUserEntity).getId();
+        }
+      }
     public UserEntity getByUsername(String username) {
         return oUserRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuari no trobat per username"));

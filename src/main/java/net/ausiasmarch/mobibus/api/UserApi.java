@@ -29,6 +29,12 @@ public class UserApi {
     public ResponseEntity<Long> create(@RequestBody UserEntity oUserEntity) {
     return ResponseEntity.ok(oUserService.create(oUserEntity));
     }
+
+    @PostMapping("/new")
+    public ResponseEntity<Long> createAcc(@RequestBody UserEntity oUserEntity) {
+    return ResponseEntity.ok(oUserService.createAcc(oUserEntity));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<UserEntity> get(@PathVariable("id") Long id) {
         return ResponseEntity.ok(oUserService.get(id));
