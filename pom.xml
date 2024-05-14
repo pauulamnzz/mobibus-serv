@@ -69,7 +69,21 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.15.4</version>
 		</dependency>
-
+<!-- Java Mail Sender -->
+		<dependency>
+      		<groupId>org.springframework.boot</groupId>
+      		<artifactId>spring-boot-starter-mail</artifactId>
+   		</dependency>
+		<!-- ThymeLeaf -->
+    	<dependency>
+      		<groupId>org.springframework.boot</groupId>
+      		<artifactId>spring-boot-starter-thymeleaf</artifactId>
+    	</dependency>
+		<dependency>
+    		<groupId>javax.xml.bind</groupId>
+    		<artifactId>jaxb-api</artifactId>
+   		 	<version>2.3.1</version> <!-- Utiliza la versión más reciente -->
+		</dependency>
 	</dependencies>
 
 	<build>

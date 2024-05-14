@@ -5,6 +5,8 @@ import java.util.List;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,6 +40,11 @@ public class UserEntity {
 
  
     private Boolean role = false;
+
+    @Column(name = "token_password")
+    private String tokenPassword;
+    
+
 
     @OneToMany(mappedBy = "user", fetch = jakarta.persistence.FetchType.LAZY)
     private List<ParadaFavEntity> paradas_favs;
@@ -108,6 +115,14 @@ public class UserEntity {
 
     public int getparadas_favs() {
         return paradas_favs.size();
+    }
+
+ public String getTokenPassword() {
+        return tokenPassword;
+    }
+
+    public void setTokenPassword(String tokenPassword) {
+        this.tokenPassword = tokenPassword;
     }
 
 

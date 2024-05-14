@@ -115,4 +115,15 @@ public class UserService {
         // oUserRepository.save(oJugadorEntity1);
         return oUserRepository.count();
     }
+
+    public UserEntity getByEmail(String email) {
+        return oUserRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found by email"));
+    }
+
+     public UserEntity getByTokenPassword(String tokenPassword) {
+        return oUserRepository.findByTokenPassword(tokenPassword)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found by token"));
+    }
+
 }
