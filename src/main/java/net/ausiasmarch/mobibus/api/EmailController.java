@@ -44,7 +44,7 @@ public class EmailController {
 
       oEmailValuesDTO.setMailFrom(strMailFrom);
       oEmailValuesDTO.setMailTo(oUserEntity.getEmail());
-      oEmailValuesDTO.setMailSubject("cambio de contraseña");
+      oEmailValuesDTO.setMailSubject("Canvi de constrasenya");
       oEmailValuesDTO.setUserName(oUserEntity.getUsername());
       /*Generamos el token para recuperar contraseña */
       UUID uuid = UUID.randomUUID();
