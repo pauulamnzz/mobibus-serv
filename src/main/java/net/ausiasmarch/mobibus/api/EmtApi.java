@@ -18,7 +18,9 @@ import net.ausiasmarch.mobibus.entity.ParadaEmtEntity;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/initial/api")
+//@RequestMapping("/api")
+
 public class EmtApi {
 
     @GetMapping("/data")
