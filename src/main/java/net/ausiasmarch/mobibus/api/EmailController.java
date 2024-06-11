@@ -22,8 +22,8 @@ import net.ausiasmarch.mobibus.service.EmailService;
 import net.ausiasmarch.mobibus.service.UserService;
 
 @RestController
-@RequestMapping("/initial/email")
-//@RequestMapping("/email")
+//@RequestMapping("/initial/email")
+@RequestMapping("/email")
 
 @CrossOrigin
 public class EmailController {

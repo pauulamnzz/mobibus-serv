@@ -21,8 +21,8 @@ import net.ausiasmarch.mobibus.service.ParadaFavService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/initial/parada_fav")
-//@RequestMapping("/parada_fav")
+//@RequestMapping("/initial/parada_fav")
+@RequestMapping("/parada_fav")
 
 public class ParadaFavApi {
 
