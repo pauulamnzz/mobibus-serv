@@ -20,12 +20,12 @@ import net.ausiasmarch.mobibus.entity.UserEntity;
 import net.ausiasmarch.mobibus.repository.UserRepository;
 import net.ausiasmarch.mobibus.service.EmailService;
 import net.ausiasmarch.mobibus.service.UserService;
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 
 @RestController
 @RequestMapping("/initial/email")
 //@RequestMapping("/email")
 
-@CrossOrigin
 public class EmailController {
     @Autowired
     EmailService oEmailService;
@@ -66,11 +66,11 @@ public class EmailController {
     @PostMapping("/change-password")
     public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordDTO oChangePasswordDTO, BindingResult oBindingResult) {
       if (oBindingResult.hasErrors()) {
-        return new ResponseEntity("Compruebe los campos introducidos", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("Comprovi els camps introduïts", HttpStatus.BAD_REQUEST);
       }
 
       if(!oChangePasswordDTO.getPassword().equals(oChangePasswordDTO.getConfirmPassword())) {
-        return new ResponseEntity("Las contraseñas no coinciden", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("Les contrasenyes no coincideixen", HttpStatus.BAD_REQUEST);
       }
 
       UserEntity oUserEntity = oUserService.getByTokenPassword(oChangePasswordDTO.getTokenPassword());
